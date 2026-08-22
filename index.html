@@ -3,160 +3,335 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Watchlist — Price Tracker</title>
+<title>Watchlist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #15161a;
-    --panel: #1c1e24;
-    --panel-border: #2a2d35;
-    --text: #e8e6df;
-    --muted: #8b8d97;
-    --brass: #c9a15c;
-    --up: #d9705c;
-    --down: #6fae7f;
-    --stale: #7a6b3e;
+    --bg: #131417;
+    --surface: #1b1d22;
+    --surface-2: #24272e;
+    --border: #2b2e35;
+    --text: #eeece6;
+    --muted: #90939c;
+    --faint: #5c5f68;
+    --brass: #d3a860;
+    --brass-dim: rgba(211,168,96,0.14);
+    --drop: #6fc08c;
+    --drop-dim: rgba(111,192,140,0.13);
+    --rise: #e0806a;
+    --rise-dim: rgba(224,128,106,0.13);
+    --stale: #c9a15c;
   }
-  * { box-sizing: border-box; }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html { scroll-behavior: smooth; }
   body {
     margin: 0;
     background: var(--bg);
     color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, sans-serif;
-    padding: 40px 20px 80px;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
   }
+
+  /* ---------- header ---------- */
   header {
-    max-width: 1100px;
-    margin: 0 auto 36px;
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    flex-wrap: wrap;
-    gap: 10px;
-    border-bottom: 1px solid var(--panel-border);
-    padding-bottom: 20px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: rgba(19,20,23,0.88);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 18px 14px;
   }
-  header h1 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    letter-spacing: 0.02em;
+  .header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+  .brand svg { width: 22px; height: 22px; flex-shrink: 0; }
+  .brand h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
     margin: 0;
+    color: var(--text);
+  }
+  .updated {
+    font-size: 0.72rem;
+    color: var(--faint);
+    font-variant-numeric: tabular-nums;
+  }
+  .stats {
+    max-width: 900px;
+    margin: 12px auto 0;
+    display: flex;
+    gap: 18px;
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+  .stats b { color: var(--text); font-weight: 600; }
+  .stats .drop-count b { color: var(--drop); }
+
+  .filters {
+    max-width: 900px;
+    margin: 12px auto 0;
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+  }
+  .filters::-webkit-scrollbar { display: none; }
+  .chip {
+    flex-shrink: 0;
+    font-size: 0.78rem;
+    font-weight: 500;
+    padding: 6px 13px;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+  }
+  .chip:hover { border-color: #3a3d47; color: var(--text); }
+  .chip.active {
+    background: var(--brass-dim);
+    border-color: var(--brass);
     color: var(--brass);
   }
-  header .sub {
-    font-size: 0.85rem;
-    color: var(--muted);
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
-  }
-  .grid {
-    max-width: 1100px;
+
+  /* ---------- feed ---------- */
+  main {
+    max-width: 900px;
     margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 16px;
+    padding: 16px 14px 60px;
   }
   .card {
-    background: var(--panel);
-    border: 1px solid var(--panel-border);
-    border-radius: 10px;
-    overflow: hidden;
     display: flex;
-    flex-direction: column;
-    transition: border-color 0.15s ease;
+    gap: 13px;
+    padding: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    margin-bottom: 10px;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s ease, transform 0.1s ease;
+    opacity: 0;
+    animation: rise 0.35s ease forwards;
   }
-  .card:hover { border-color: #3a3d47; }
-  .card a { color: inherit; text-decoration: none; }
+  .card:active { transform: scale(0.985); }
+  @keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
   .thumb {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    background: #0f1013;
+    width: 72px;
+    height: 72px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background: #eeece6;
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
   }
   .thumb img { width: 100%; height: 100%; object-fit: contain; }
-  .thumb .placeholder { color: var(--muted); font-size: 0.75rem; }
-  .body { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 8px; }
+  .thumb .ph { color: #b8b5aa; font-size: 1.3rem; }
+
+  .info { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: 5px; }
   .name {
-    font-size: 0.9rem;
-    line-height: 1.3;
-    min-height: 2.4em;
+    font-size: 0.86rem;
+    line-height: 1.28;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
-  .price-row {
-    display: flex;
-    align-items: baseline;
-    gap: 10px;
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
-  }
+  .price-line { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
   .price {
-    font-size: 1.4rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.18rem;
     font-weight: 600;
-    letter-spacing: -0.01em;
+    font-variant-numeric: tabular-nums;
   }
   .delta {
-    font-size: 0.78rem;
-    padding: 2px 7px;
-    border-radius: 20px;
-    font-weight: 600;
-  }
-  .delta.down { color: var(--down); background: rgba(111,174,127,0.12); }
-  .delta.up { color: var(--up); background: rgba(217,112,92,0.12); }
-  .delta.flat { color: var(--muted); background: rgba(139,141,151,0.1); }
-  .meta {
     font-size: 0.72rem;
-    color: var(--muted);
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    display: flex;
-    justify-content: space-between;
-    margin-top: 4px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 100px;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
   }
-  .tag { padding: 1px 6px; border-radius: 4px; border: 1px solid var(--panel-border); }
-  .tag.stale { color: var(--stale); border-color: var(--stale); }
-  .empty {
-    max-width: 1100px;
-    margin: 60px auto;
+  .delta.down { color: var(--drop); background: var(--drop-dim); }
+  .delta.up { color: var(--rise); background: var(--rise-dim); }
+  .delta.flat { color: var(--faint); background: rgba(255,255,255,0.04); }
+
+  .meta-row { display: flex; align-items: center; gap: 8px; font-size: 0.68rem; color: var(--faint); }
+  .dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .dot.auto { background: var(--drop); }
+  .dot.effort { background: var(--brass); }
+  .dot.stale { background: var(--stale); opacity: 0.6; }
+
+  .spark { flex-shrink: 0; width: 56px; height: 30px; align-self: center; }
+
+  .empty, .loading {
+    max-width: 480px;
+    margin: 80px auto;
     text-align: center;
     color: var(--muted);
-    font-size: 0.9rem;
-    line-height: 1.6;
+    font-size: 0.88rem;
+    line-height: 1.7;
+    padding: 0 20px;
+  }
+  .empty code {
+    background: var(--surface-2);
+    padding: 2px 7px;
+    border-radius: 5px;
+    font-size: 0.82em;
+    color: var(--brass);
+  }
+
+  @media (min-width: 640px) {
+    main { padding-top: 22px; }
+    .grid-wrap {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 12px;
+    }
+    .card { flex-direction: column; margin-bottom: 0; }
+    .thumb { width: 100%; height: 150px; }
+    .price-line { flex-wrap: wrap; }
   }
 </style>
 </head>
 <body>
 
 <header>
-  <h1>⌚ Watchlist</h1>
-  <div class="sub" id="updated">loading…</div>
+  <div class="header-row">
+    <div class="brand">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="8.2" stroke="#d3a860" stroke-width="1.6"/>
+        <path d="M12 7.5V12L15 14" stroke="#d3a860" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M9.5 3.5H14.5M9.5 20.5H14.5" stroke="#d3a860" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+      <h1>Watchlist</h1>
+    </div>
+    <div class="updated" id="updated">loading…</div>
+  </div>
+  <div class="stats" id="stats"></div>
+  <div class="filters" id="filters">
+    <button class="chip active" data-filter="all">All</button>
+    <button class="chip" data-filter="drops">Price drops</button>
+    <button class="chip" data-filter="auto">Auto-tracked</button>
+    <button class="chip" data-filter="effort">Best-effort</button>
+  </div>
 </header>
 
-<div id="grid" class="grid"></div>
-<div id="empty" class="empty" style="display:none">
-  No price data yet. Run <code>python scraper.py</code> once (or wait for the
-  first scheduled Action run) to populate this page.
-</div>
+<main>
+  <div id="loading" class="loading">loading your watchlist…</div>
+  <div id="empty" class="empty" style="display:none">
+    No price data yet. Run <code>python scraper.py</code> once (or wait for the
+    first scheduled Action run) to populate this page.
+  </div>
+  <div id="feed" class="grid-wrap"></div>
+</main>
 
 <script>
+const BEST_EFFORT = new Set(['flipkart', 'myntra', 'amazon']);
+let ROWS = [];
+
+function sparkline(readings) {
+  if (!readings || readings.length < 2) {
+    return `<svg class="spark" viewBox="0 0 56 30"><circle cx="28" cy="15" r="2.5" fill="var(--faint)"/></svg>`;
+  }
+  const prices = readings.map(r => r.price);
+  const min = Math.min(...prices), max = Math.max(...prices);
+  const range = max - min || 1;
+  const pts = prices.map((p, i) => {
+    const x = (i / (prices.length - 1)) * 52 + 2;
+    const y = 26 - ((p - min) / range) * 22 - 2;
+    return `${x.toFixed(1)},${y.toFixed(1)}`;
+  }).join(' ');
+  const trendColor = prices[prices.length - 1] <= prices[0] ? 'var(--drop)' : 'var(--rise)';
+  return `<svg class="spark" viewBox="0 0 56 30"><polyline points="${pts}" fill="none" stroke="${trendColor}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+}
+
+function render(filter) {
+  const feed = document.getElementById('feed');
+  let rows = ROWS;
+  if (filter === 'drops') rows = rows.filter(r => r.diff < 0);
+  if (filter === 'auto') rows = rows.filter(r => !r.isBestEffort);
+  if (filter === 'effort') rows = rows.filter(r => r.isBestEffort);
+
+  if (!rows.length) {
+    feed.innerHTML = `<div class="empty">Nothing matches this filter yet.</div>`;
+    return;
+  }
+
+  feed.innerHTML = rows.map((r, i) => {
+    const { item, current, diff, pct, isBestEffort, status, readings } = r;
+    const priceStr = current != null ? `₹${current.toLocaleString('en-IN')}` : '—';
+    let deltaClass = 'flat', deltaStr = readings.length > 1 ? 'no change' : `day 1`;
+    if (diff < 0) { deltaClass = 'down'; deltaStr = `▼ ${pct.toFixed(1)}%`; }
+    else if (diff > 0) { deltaClass = 'up'; deltaStr = `▲ ${pct.toFixed(1)}%`; }
+
+    const img = item.image
+      ? `<img src="${item.image}" alt="" loading="lazy">`
+      : `<span class="ph">⌚</span>`;
+
+    const dotClass = status === 'failed' ? 'stale' : (isBestEffort ? 'effort' : 'auto');
+    const dotLabel = status === 'failed' ? 'stale' : (isBestEffort ? 'best-effort' : 'auto-tracked');
+
+    return `
+      <a class="card" href="${item.url}" target="_blank" rel="noopener" style="animation-delay:${Math.min(i,10)*30}ms">
+        <div class="thumb">${img}</div>
+        <div class="info">
+          <div class="name">${item.name}</div>
+          <div class="price-line">
+            <span class="price">${priceStr}</span>
+            <span class="delta ${deltaClass}">${deltaStr}</span>
+          </div>
+          <div class="meta-row">
+            <span class="dot ${dotClass}"></span>
+            <span>${item.platform} · ${dotLabel}</span>
+          </div>
+        </div>
+        ${sparkline(readings)}
+      </a>`;
+  }).join('');
+}
+
 async function load() {
   let history;
   try {
     const res = await fetch('data/history.json?_=' + Date.now());
     history = await res.json();
   } catch (e) {
+    document.getElementById('loading').style.display = 'none';
     document.getElementById('empty').style.display = 'block';
     document.getElementById('updated').textContent = 'no data yet';
     return;
   }
 
   const entries = Object.values(history);
+  document.getElementById('loading').style.display = 'none';
   if (!entries.length) {
     document.getElementById('empty').style.display = 'block';
     return;
   }
 
-  const bestEffort = new Set(['flipkart', 'myntra', 'amazon']);
-  const grid = document.getElementById('grid');
   let latestDate = null;
-
-  const rows = entries.map(item => {
+  ROWS = entries.map(item => {
     const readings = item.readings || [];
     const last = readings[readings.length - 1];
     const first = readings[0];
@@ -167,49 +342,27 @@ async function load() {
     const diff = current != null && baseline != null ? current - baseline : 0;
     const pct = baseline ? (diff / baseline) * 100 : 0;
 
-    return { item, current, diff, pct, isBestEffort: bestEffort.has(item.platform), status: item.last_status };
+    return { item, current, diff, pct, readings, isBestEffort: BEST_EFFORT.has(item.platform), status: item.last_status };
   });
 
-  // Show biggest price drops first — that's the actually useful ordering
-  rows.sort((a, b) => a.pct - b.pct);
+  ROWS.sort((a, b) => a.pct - b.pct);
 
-  document.getElementById('updated').textContent =
-    latestDate ? `last checked: ${latestDate}` : '';
+  document.getElementById('updated').textContent = latestDate ? `updated ${latestDate}` : '';
+  const dropCount = ROWS.filter(r => r.diff < 0).length;
+  document.getElementById('stats').innerHTML =
+    `<span><b>${ROWS.length}</b> tracked</span>` +
+    (dropCount ? `<span class="drop-count"><b>${dropCount}</b> price drops</span>` : '');
 
-  grid.innerHTML = rows.map(r => {
-    const { item, current, diff, pct, isBestEffort, status } = r;
-    const priceStr = current != null ? `₹${current.toLocaleString('en-IN')}` : '—';
-    let deltaClass = 'flat', deltaStr = 'first reading';
-    if (diff < 0) { deltaClass = 'down'; deltaStr = `▼ ₹${Math.abs(diff).toLocaleString('en-IN')} (${pct.toFixed(1)}%)`; }
-    else if (diff > 0) { deltaClass = 'up'; deltaStr = `▲ ₹${diff.toLocaleString('en-IN')} (+${pct.toFixed(1)}%)`; }
-
-    const img = item.image
-      ? `<img src="${item.image}" alt="">`
-      : `<span class="placeholder">no photo yet</span>`;
-
-    const staleTag = status === 'failed'
-      ? `<span class="tag stale">stale</span>`
-      : (isBestEffort ? `<span class="tag">best-effort</span>` : `<span class="tag">auto</span>`);
-
-    return `
-      <div class="card">
-        <a href="${item.url}" target="_blank" rel="noopener">
-          <div class="thumb">${img}</div>
-          <div class="body">
-            <div class="name">${item.name}</div>
-            <div class="price-row">
-              <span class="price">${priceStr}</span>
-              <span class="delta ${deltaClass}">${deltaStr}</span>
-            </div>
-            <div class="meta">
-              <span>${item.platform}</span>
-              ${staleTag}
-            </div>
-          </div>
-        </a>
-      </div>`;
-  }).join('');
+  render('all');
 }
+
+document.getElementById('filters').addEventListener('click', (e) => {
+  const btn = e.target.closest('.chip');
+  if (!btn) return;
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  render(btn.dataset.filter);
+});
 
 load();
 </script>
