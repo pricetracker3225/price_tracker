@@ -59,9 +59,15 @@
     "name": "Titan Edge Analog Watch (Men)",
     "url": "https://www.flipkart.com/titan-edge-analog-watch-men/p/itm073cf9e9e2795",
     "platform": "flipkart",
-    "image": null,
-    "readings": [],
-    "last_status": "failed"
+    "image": "https://rukmini1.flixcart.com/image/1500/1500/xif0q/watch/b/2/i/-watermarked-original-imahgfgdwk2mja67.jpeg?q=70",
+    "readings": [
+      {
+        "date": "2026-08-22",
+        "price": 12995.0
+      }
+    ],
+    "last_status": "ok",
+    "last_ok": "2026-08-22"
   },
   "timex-chrono-tw2y70500ik-myntra": {
     "name": "Timex Chronograph Bracelet Watch (TW2Y70500IK)",
@@ -96,36 +102,60 @@
     "last_status": "failed"
   },
   "flipkart-link-1": {
-    "name": "Flipkart item (link 1) - confirm name after first run",
+    "name": "ADIDAS SHIFT M Running Shoes For Men",
     "url": "https://dl.flipkart.com/s/kEssCHuuuN",
     "platform": "flipkart",
-    "image": null,
-    "readings": [],
-    "last_status": "failed"
+    "image": "https://rukmini1.flixcart.com/image/1500/1500/xif0q/shoe/g/g/b/-original-imahh6w7hbu92fuf.jpeg?q=70",
+    "readings": [
+      {
+        "date": "2026-08-22",
+        "price": 3599.0
+      }
+    ],
+    "last_status": "ok",
+    "last_ok": "2026-08-22"
   },
   "flipkart-link-2": {
-    "name": "Flipkart item (link 2) - confirm name after first run",
+    "name": "TIMEX Date Display with (Magnifier), Blue Dial Analog Watch  - For Men",
     "url": "https://dl.flipkart.com/s/x9_kDBNNNN",
     "platform": "flipkart",
-    "image": null,
-    "readings": [],
-    "last_status": "failed"
+    "image": "https://rukmini1.flixcart.com/image/1500/1500/xif0q/watch/5/z/q/-watermarked-original-imahfssk42wkaagm.jpeg?q=70",
+    "readings": [
+      {
+        "date": "2026-08-22",
+        "price": 3719.0
+      }
+    ],
+    "last_status": "ok",
+    "last_ok": "2026-08-22"
   },
   "flipkart-link-3": {
-    "name": "Flipkart item (link 3) - confirm name after first run",
+    "name": "Logitech Pebble Keys 2 K380s Bluetooth Laptop-size Tablet Keyboard Compatible with Desktop, Laptop, Mac Easy to Use,Plug and Play,Quick, Comfy Durable body",
     "url": "https://dl.flipkart.com/s/kEPsNtuuuN",
     "platform": "flipkart",
-    "image": null,
-    "readings": [],
-    "last_status": "failed"
+    "image": "https://rukmini1.flixcart.com/image/1500/1500/xif0q/keyboard/2/x/m/-enriched-transparent-original-imahbg3zanfhjqct.png?q=70",
+    "readings": [
+      {
+        "date": "2026-08-22",
+        "price": 3195.0
+      }
+    ],
+    "last_status": "ok",
+    "last_ok": "2026-08-22"
   },
   "amazon-link-1": {
-    "name": "Amazon item - confirm name after first run",
+    "name": "Logitech Pebble 2 Combo Wireless Keyboard and Mouse",
     "url": "https://amzn.in/d/00LZsUFf",
     "platform": "amazon",
-    "image": null,
-    "readings": [],
-    "last_status": "failed"
+    "image": "https://m.media-amazon.com/images/I/61tXu487rcL._SX679_.jpg",
+    "readings": [
+      {
+        "date": "2026-08-22",
+        "price": 4595.0
+      }
+    ],
+    "last_status": "ok",
+    "last_ok": "2026-08-22"
   },
   "puma-fusionpro-myntra": {
     "name": "Puma FusionPro Running Shoes",
