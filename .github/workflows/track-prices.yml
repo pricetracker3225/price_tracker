@@ -24,6 +24,9 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Install headless browser
+        run: playwright install --with-deps chromium
+
       - name: Run price check
         run: python scraper.py
 
