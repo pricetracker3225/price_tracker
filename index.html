@@ -6,211 +6,235 @@
 <title>Watchlist</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #131417;
-    --surface: #1b1d22;
-    --surface-2: #24272e;
-    --border: #2b2e35;
-    --text: #eeece6;
-    --muted: #90939c;
-    --faint: #5c5f68;
-    --brass: #d3a860;
-    --brass-dim: rgba(211,168,96,0.14);
-    --drop: #6fc08c;
-    --drop-dim: rgba(111,192,140,0.13);
-    --rise: #e0806a;
-    --rise-dim: rgba(224,128,106,0.13);
-    --stale: #c9a15c;
+    --bg: #101114;
+    --bg-glow-1: #2a1f3d;
+    --bg-glow-2: #1a2a3a;
+    --surface: #1a1c22;
+    --surface-2: #22252c;
+    --border: #2c2f38;
+    --text: #f3f1ea;
+    --muted: #9497a3;
+    --faint: #5f626d;
+    --brass: #e0b46a;
+    --drop: #3ddc84;
+    --drop-dim: rgba(61,220,132,0.14);
+    --rise: #ff6b6b;
+    --rise-dim: rgba(255,107,107,0.14);
+    --flipkart: #2874f0;
+    --amazon: #ff9900;
+    --myntra: #ff3f6c;
+    --shopify: #d3a860;
   }
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html { scroll-behavior: smooth; }
   body {
     margin: 0;
-    background: var(--bg);
+    min-height: 100vh;
+    background:
+      radial-gradient(ellipse 700px 400px at 15% -5%, var(--bg-glow-1) 0%, transparent 60%),
+      radial-gradient(ellipse 600px 400px at 100% 10%, var(--bg-glow-2) 0%, transparent 55%),
+      var(--bg);
+    background-attachment: fixed;
     color: var(--text);
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     -webkit-font-smoothing: antialiased;
   }
 
-  /* ---------- header ---------- */
   header {
     position: sticky;
     top: 0;
-    z-index: 10;
-    background: rgba(19,20,23,0.88);
-    backdrop-filter: blur(10px);
+    z-index: 20;
+    background: rgba(16,17,20,0.78);
+    backdrop-filter: blur(14px) saturate(160%);
     border-bottom: 1px solid var(--border);
-    padding: 16px 18px 14px;
+    padding: 16px 18px 12px;
   }
-  .header-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    max-width: 900px;
-    margin: 0 auto;
+  .header-row { display: flex; align-items: center; justify-content: space-between; max-width: 900px; margin: 0 auto; }
+  .brand { display: flex; align-items: center; gap: 9px; }
+  .brand-icon {
+    width: 30px; height: 30px; border-radius: 9px; flex-shrink: 0;
+    background: linear-gradient(135deg, #e0b46a, #c98a3f);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 3px 10px rgba(224,180,106,0.28);
   }
-  .brand {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-  }
-  .brand svg { width: 22px; height: 22px; flex-shrink: 0; }
+  .brand-icon svg { width: 17px; height: 17px; }
   .brand h1 {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.15rem;
-    font-weight: 700;
-    letter-spacing: -0.01em;
-    margin: 0;
-    color: var(--text);
+    font-size: 1.2rem; font-weight: 700; letter-spacing: -0.01em; margin: 0;
   }
-  .updated {
-    font-size: 0.72rem;
-    color: var(--faint);
-    font-variant-numeric: tabular-nums;
+  .live-badge {
+    display: flex; align-items: center; gap: 5px;
+    font-size: 0.7rem; color: var(--muted); font-weight: 500;
   }
-  .stats {
-    max-width: 900px;
-    margin: 12px auto 0;
-    display: flex;
-    gap: 18px;
-    font-size: 0.78rem;
-    color: var(--muted);
+  .live-dot {
+    width: 6px; height: 6px; border-radius: 50%; background: var(--drop);
+    box-shadow: 0 0 0 0 rgba(61,220,132,0.5);
+    animation: pulse 2s infinite;
   }
-  .stats b { color: var(--text); font-weight: 600; }
-  .stats .drop-count b { color: var(--drop); }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(61,220,132,0.45); }
+    70% { box-shadow: 0 0 0 6px rgba(61,220,132,0); }
+    100% { box-shadow: 0 0 0 0 rgba(61,220,132,0); }
+  }
+
+  .stats { max-width: 900px; margin: 13px auto 0; display: flex; gap: 10px; }
+  .stat-pill {
+    font-size: 0.76rem; font-weight: 600; padding: 5px 12px; border-radius: 100px;
+    background: var(--surface); border: 1px solid var(--border); color: var(--muted);
+  }
+  .stat-pill.hot {
+    background: linear-gradient(135deg, rgba(61,220,132,0.16), rgba(61,220,132,0.06));
+    border-color: rgba(61,220,132,0.35); color: var(--drop);
+  }
+  .stat-pill b { color: inherit; }
 
   .filters {
-    max-width: 900px;
-    margin: 12px auto 0;
-    display: flex;
-    gap: 8px;
-    overflow-x: auto;
-    scrollbar-width: none;
-    padding-bottom: 2px;
+    max-width: 900px; margin: 12px auto 0; display: flex; gap: 7px;
+    overflow-x: auto; scrollbar-width: none; padding-bottom: 2px;
   }
   .filters::-webkit-scrollbar { display: none; }
   .chip {
-    flex-shrink: 0;
-    font-size: 0.78rem;
-    font-weight: 500;
-    padding: 6px 13px;
-    border-radius: 100px;
-    border: 1px solid var(--border);
-    background: var(--surface);
-    color: var(--muted);
-    cursor: pointer;
-    transition: all 0.15s ease;
+    flex-shrink: 0; font-size: 0.78rem; font-weight: 600; padding: 7px 14px;
+    border-radius: 100px; border: 1px solid var(--border); background: var(--surface);
+    color: var(--muted); cursor: pointer; transition: all 0.2s cubic-bezier(.2,.8,.2,1);
     white-space: nowrap;
   }
-  .chip:hover { border-color: #3a3d47; color: var(--text); }
+  .chip:active { transform: scale(0.94); }
   .chip.active {
-    background: var(--brass-dim);
-    border-color: var(--brass);
-    color: var(--brass);
+    background: linear-gradient(135deg, #e0b46a, #c98a3f);
+    border-color: transparent; color: #201404;
+    box-shadow: 0 3px 10px rgba(224,180,106,0.3);
   }
 
-  /* ---------- feed ---------- */
-  main {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 16px 14px 60px;
+  main { max-width: 900px; margin: 0 auto; padding: 16px 14px 60px; }
+
+  /* ---------- hero spotlight ---------- */
+  .hero {
+    display: block; text-decoration: none; color: inherit;
+    border-radius: 20px; padding: 18px; margin-bottom: 16px;
+    background: linear-gradient(135deg, #1d3a2c 0%, #16211f 55%, #17181c 100%);
+    border: 1px solid rgba(61,220,132,0.25);
+    position: relative; overflow: hidden;
+    opacity: 0; animation: rise 0.4s ease forwards;
   }
+  .hero::after {
+    content: ''; position: absolute; top: -40%; right: -15%; width: 220px; height: 220px;
+    background: radial-gradient(circle, rgba(61,220,132,0.18), transparent 70%);
+    pointer-events: none;
+  }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 5px; font-size: 0.68rem; font-weight: 700;
+    letter-spacing: 0.04em; text-transform: uppercase; color: var(--drop);
+    background: rgba(61,220,132,0.14); padding: 4px 10px; border-radius: 100px; margin-bottom: 12px;
+  }
+  .hero-body { display: flex; gap: 14px; align-items: center; position: relative; }
+  .hero-thumb {
+    width: 68px; height: 68px; border-radius: 12px; background: #f3f1ea; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+  }
+  .hero-thumb img { width: 100%; height: 100%; object-fit: contain; }
+  .hero-info { flex: 1; min-width: 0; }
+  .hero-name { font-size: 0.9rem; font-weight: 500; margin-bottom: 6px; line-height: 1.3; }
+  .hero-price-row { display: flex; align-items: baseline; gap: 9px; flex-wrap: wrap; }
+  .hero-price { font-family: 'Space Grotesk', sans-serif; font-size: 1.7rem; font-weight: 700; }
+  .hero-was { font-size: 0.82rem; color: var(--faint); text-decoration: line-through; }
+  .hero-off {
+    font-family: 'Space Grotesk', sans-serif; font-size: 0.78rem; font-weight: 700;
+    color: #0f2417; background: var(--drop); padding: 3px 9px; border-radius: 7px;
+  }
+
+  /* ---------- cards ---------- */
   .card {
-    display: flex;
-    gap: 13px;
-    padding: 12px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    margin-bottom: 10px;
-    text-decoration: none;
-    color: inherit;
-    transition: border-color 0.15s ease, transform 0.1s ease;
-    opacity: 0;
-    animation: rise 0.35s ease forwards;
+    display: flex; gap: 12px; padding: 12px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 16px; margin-bottom: 10px;
+    text-decoration: none; color: inherit; position: relative; overflow: hidden;
+    transition: transform 0.15s cubic-bezier(.2,.8,.2,1), border-color 0.15s ease, box-shadow 0.15s ease;
+    opacity: 0; animation: rise 0.35s ease forwards;
   }
-  .card:active { transform: scale(0.985); }
-  @keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .card:active { transform: scale(0.98); }
+  @media (hover: hover) {
+    .card:hover { border-color: #3d4049; box-shadow: 0 8px 20px rgba(0,0,0,0.25); }
+    .card:hover .thumb img { transform: scale(1.06); }
+  }
+  @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  .accent-bar { position: absolute; left: 0; top: 10px; bottom: 10px; width: 3px; border-radius: 3px; }
+  .accent-bar.shopify { background: var(--shopify); }
+  .accent-bar.flipkart { background: var(--flipkart); }
+  .accent-bar.amazon { background: var(--amazon); }
+  .accent-bar.myntra { background: var(--myntra); }
 
   .thumb {
-    width: 72px;
-    height: 72px;
-    flex-shrink: 0;
-    border-radius: 10px;
-    background: #eeece6;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
+    width: 72px; height: 72px; flex-shrink: 0; border-radius: 12px; background: #f3f1ea;
+    display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;
   }
-  .thumb img { width: 100%; height: 100%; object-fit: contain; }
-  .thumb .ph { color: #b8b5aa; font-size: 1.3rem; }
+  .thumb img { width: 100%; height: 100%; object-fit: contain; transition: transform 0.25s ease; }
+  .thumb .ph { color: #b8b5aa; font-size: 1.4rem; }
+  .ribbon {
+    position: absolute; top: 4px; left: 4px; font-size: 0.6rem; font-weight: 700;
+    padding: 2px 6px; border-radius: 5px; background: var(--drop); color: #0f2417;
+  }
 
   .info { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: 5px; }
   .name {
-    font-size: 0.86rem;
-    line-height: 1.28;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    font-size: 0.86rem; font-weight: 500; line-height: 1.28;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
   }
   .price-line { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
   .price {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.18rem;
-    font-weight: 600;
+    font-family: 'Space Grotesk', sans-serif; font-size: 1.2rem; font-weight: 700;
     font-variant-numeric: tabular-nums;
   }
   .delta {
-    font-size: 0.72rem;
-    font-weight: 600;
-    padding: 2px 8px;
-    border-radius: 100px;
-    font-variant-numeric: tabular-nums;
-    white-space: nowrap;
+    font-size: 0.72rem; font-weight: 700; padding: 3px 9px; border-radius: 100px;
+    font-variant-numeric: tabular-nums; white-space: nowrap;
   }
   .delta.down { color: var(--drop); background: var(--drop-dim); }
   .delta.up { color: var(--rise); background: var(--rise-dim); }
-  .delta.flat { color: var(--faint); background: rgba(255,255,255,0.04); }
+  .delta.flat { color: var(--faint); background: rgba(255,255,255,0.05); }
 
-  .meta-row { display: flex; align-items: center; gap: 8px; font-size: 0.68rem; color: var(--faint); }
-  .dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
-  .dot.auto { background: var(--drop); }
-  .dot.effort { background: var(--brass); }
-  .dot.stale { background: var(--stale); opacity: 0.6; }
-
-  .spark { flex-shrink: 0; width: 56px; height: 30px; align-self: center; }
-
-  .empty, .loading {
-    max-width: 480px;
-    margin: 80px auto;
-    text-align: center;
-    color: var(--muted);
-    font-size: 0.88rem;
-    line-height: 1.7;
-    padding: 0 20px;
+  .meta-row { display: flex; align-items: center; gap: 6px; font-size: 0.68rem; color: var(--faint); font-weight: 500; }
+  .platform-badge {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 15px; height: 15px; border-radius: 4px; font-size: 0.55rem; font-weight: 800; color: #fff;
+    flex-shrink: 0;
   }
-  .empty code {
-    background: var(--surface-2);
-    padding: 2px 7px;
-    border-radius: 5px;
-    font-size: 0.82em;
-    color: var(--brass);
+  .platform-badge.shopify { background: var(--shopify); color: #241705; }
+  .platform-badge.flipkart { background: var(--flipkart); }
+  .platform-badge.amazon { background: var(--amazon); color: #241705; }
+  .platform-badge.myntra { background: var(--myntra); }
+  .stale-flag { color: var(--brass); }
+
+  .spark { flex-shrink: 0; width: 54px; height: 30px; align-self: center; }
+
+  /* ---------- skeleton loading ---------- */
+  .skel-card { display: flex; gap: 12px; padding: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; margin-bottom: 10px; }
+  .skel-thumb, .skel-line { border-radius: 8px; background: linear-gradient(90deg, var(--surface-2) 25%, #2e313a 37%, var(--surface-2) 63%); background-size: 400% 100%; animation: shimmer 1.4s ease infinite; }
+  .skel-thumb { width: 72px; height: 72px; border-radius: 12px; flex-shrink: 0; }
+  .skel-body { flex: 1; display: flex; flex-direction: column; gap: 8px; justify-content: center; }
+  .skel-line { height: 12px; }
+  .skel-line.w60 { width: 60%; }
+  .skel-line.w40 { width: 40%; }
+  .skel-line.w80 { width: 80%; }
+  @keyframes shimmer { 0% { background-position: 100% 0; } 100% { background-position: -100% 0; } }
+
+  .empty {
+    max-width: 480px; margin: 60px auto; text-align: center; color: var(--muted);
+    font-size: 0.88rem; line-height: 1.7; padding: 0 20px;
   }
+  .empty code { background: var(--surface-2); padding: 2px 7px; border-radius: 5px; font-size: 0.82em; color: var(--brass); }
 
   @media (min-width: 640px) {
     main { padding-top: 22px; }
-    .grid-wrap {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 12px;
-    }
+    .cards-wrap { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 12px; }
     .card { flex-direction: column; margin-bottom: 0; }
-    .thumb { width: 100%; height: 150px; }
-    .price-line { flex-wrap: wrap; }
+    .accent-bar { top: 0; left: 0; right: 0; bottom: auto; height: 3px; width: auto; border-radius: 16px 16px 0 0; }
+    .thumb { width: 100%; height: 140px; border-radius: 12px 12px 0 0; margin: -12px -12px 0; width: calc(100% + 24px); }
+    .skel-card { flex-direction: column; }
+    .skel-thumb { width: 100%; height: 130px; }
   }
 </style>
 </head>
@@ -219,51 +243,85 @@
 <header>
   <div class="header-row">
     <div class="brand">
-      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="12" cy="12" r="8.2" stroke="#d3a860" stroke-width="1.6"/>
-        <path d="M12 7.5V12L15 14" stroke="#d3a860" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M9.5 3.5H14.5M9.5 20.5H14.5" stroke="#d3a860" stroke-width="1.6" stroke-linecap="round"/>
-      </svg>
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="7.5" stroke="#1a1206" stroke-width="1.8"/>
+          <path d="M12 8V12L14.5 13.8" stroke="#1a1206" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
       <h1>Watchlist</h1>
     </div>
-    <div class="updated" id="updated">loading…</div>
+    <div class="live-badge"><span class="live-dot"></span><span id="updated">loading…</span></div>
   </div>
   <div class="stats" id="stats"></div>
   <div class="filters" id="filters">
     <button class="chip active" data-filter="all">All</button>
-    <button class="chip" data-filter="drops">Price drops</button>
+    <button class="chip" data-filter="drops">🔥 Price drops</button>
     <button class="chip" data-filter="auto">Auto-tracked</button>
     <button class="chip" data-filter="effort">Best-effort</button>
   </div>
 </header>
 
 <main>
-  <div id="loading" class="loading">loading your watchlist…</div>
+  <div id="skeleton">
+    <div class="skel-card"><div class="skel-thumb"></div><div class="skel-body"><div class="skel-line w80"></div><div class="skel-line w40"></div><div class="skel-line w60"></div></div></div>
+    <div class="skel-card"><div class="skel-thumb"></div><div class="skel-body"><div class="skel-line w80"></div><div class="skel-line w40"></div><div class="skel-line w60"></div></div></div>
+    <div class="skel-card"><div class="skel-thumb"></div><div class="skel-body"><div class="skel-line w80"></div><div class="skel-line w40"></div><div class="skel-line w60"></div></div></div>
+  </div>
   <div id="empty" class="empty" style="display:none">
     No price data yet. Run <code>python scraper.py</code> once (or wait for the
     first scheduled Action run) to populate this page.
   </div>
-  <div id="feed" class="grid-wrap"></div>
+  <div id="hero-wrap"></div>
+  <div id="feed" class="cards-wrap"></div>
 </main>
 
 <script>
 const BEST_EFFORT = new Set(['flipkart', 'myntra', 'amazon']);
 let ROWS = [];
 
-function sparkline(readings) {
+function sparkline(readings, color) {
   if (!readings || readings.length < 2) {
-    return `<svg class="spark" viewBox="0 0 56 30"><circle cx="28" cy="15" r="2.5" fill="var(--faint)"/></svg>`;
+    return `<svg class="spark" viewBox="0 0 54 30"><circle cx="27" cy="15" r="2.5" fill="var(--faint)"/></svg>`;
   }
   const prices = readings.map(r => r.price);
   const min = Math.min(...prices), max = Math.max(...prices);
   const range = max - min || 1;
   const pts = prices.map((p, i) => {
-    const x = (i / (prices.length - 1)) * 52 + 2;
+    const x = (i / (prices.length - 1)) * 50 + 2;
     const y = 26 - ((p - min) / range) * 22 - 2;
     return `${x.toFixed(1)},${y.toFixed(1)}`;
   }).join(' ');
-  const trendColor = prices[prices.length - 1] <= prices[0] ? 'var(--drop)' : 'var(--rise)';
-  return `<svg class="spark" viewBox="0 0 56 30"><polyline points="${pts}" fill="none" stroke="${trendColor}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  return `<svg class="spark" viewBox="0 0 54 30"><polyline points="${pts}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+}
+
+function platformInitial(p) {
+  return { shopify: 'S', flipkart: 'F', amazon: 'A', myntra: 'M' }[p] || '?';
+}
+
+function renderHero() {
+  const heroWrap = document.getElementById('hero-wrap');
+  const drops = ROWS.filter(r => r.diff < 0 && r.readings.length > 1);
+  if (!drops.length) { heroWrap.innerHTML = ''; return; }
+  const best = drops[0];
+  const { item, current, pct, readings } = best;
+  const was = readings[0].price;
+  const img = item.image ? `<img src="${item.image}" alt="">` : `<span class="ph">⌚</span>`;
+  heroWrap.innerHTML = `
+    <a class="hero" href="${item.url}" target="_blank" rel="noopener">
+      <span class="hero-tag">🔥 Biggest drop right now</span>
+      <div class="hero-body">
+        <div class="hero-thumb">${img}</div>
+        <div class="hero-info">
+          <div class="hero-name">${item.name}</div>
+          <div class="hero-price-row">
+            <span class="hero-price">₹${current.toLocaleString('en-IN')}</span>
+            <span class="hero-was">₹${was.toLocaleString('en-IN')}</span>
+            <span class="hero-off">${Math.abs(pct).toFixed(0)}% off</span>
+          </div>
+        </div>
+      </div>
+    </a>`;
 }
 
 function render(filter) {
@@ -273,6 +331,8 @@ function render(filter) {
   if (filter === 'auto') rows = rows.filter(r => !r.isBestEffort);
   if (filter === 'effort') rows = rows.filter(r => r.isBestEffort);
 
+  document.getElementById('hero-wrap').style.display = filter === 'all' ? 'block' : 'none';
+
   if (!rows.length) {
     feed.innerHTML = `<div class="empty">Nothing matches this filter yet.</div>`;
     return;
@@ -281,20 +341,19 @@ function render(filter) {
   feed.innerHTML = rows.map((r, i) => {
     const { item, current, diff, pct, isBestEffort, status, readings } = r;
     const priceStr = current != null ? `₹${current.toLocaleString('en-IN')}` : '—';
-    let deltaClass = 'flat', deltaStr = readings.length > 1 ? 'no change' : `day 1`;
-    if (diff < 0) { deltaClass = 'down'; deltaStr = `▼ ${pct.toFixed(1)}%`; }
-    else if (diff > 0) { deltaClass = 'up'; deltaStr = `▲ ${pct.toFixed(1)}%`; }
+    let deltaClass = 'flat', deltaStr = readings.length > 1 ? 'no change' : 'day 1';
+    let trendColor = 'var(--faint)';
+    if (diff < 0) { deltaClass = 'down'; deltaStr = `▼ ${Math.abs(pct).toFixed(1)}%`; trendColor = 'var(--drop)'; }
+    else if (diff > 0) { deltaClass = 'up'; deltaStr = `▲ ${pct.toFixed(1)}%`; trendColor = 'var(--rise)'; }
 
-    const img = item.image
-      ? `<img src="${item.image}" alt="" loading="lazy">`
-      : `<span class="ph">⌚</span>`;
-
-    const dotClass = status === 'failed' ? 'stale' : (isBestEffort ? 'effort' : 'auto');
-    const dotLabel = status === 'failed' ? 'stale' : (isBestEffort ? 'best-effort' : 'auto-tracked');
+    const img = item.image ? `<img src="${item.image}" alt="" loading="lazy">` : `<span class="ph">⌚</span>`;
+    const ribbon = diff < 0 ? `<span class="ribbon">-${Math.abs(pct).toFixed(0)}%</span>` : '';
+    const staleNote = status === 'failed' ? `<span class="stale-flag">· stale</span>` : '';
 
     return `
       <a class="card" href="${item.url}" target="_blank" rel="noopener" style="animation-delay:${Math.min(i,10)*30}ms">
-        <div class="thumb">${img}</div>
+        <span class="accent-bar ${item.platform}"></span>
+        <div class="thumb">${img}${ribbon}</div>
         <div class="info">
           <div class="name">${item.name}</div>
           <div class="price-line">
@@ -302,11 +361,11 @@ function render(filter) {
             <span class="delta ${deltaClass}">${deltaStr}</span>
           </div>
           <div class="meta-row">
-            <span class="dot ${dotClass}"></span>
-            <span>${item.platform} · ${dotLabel}</span>
+            <span class="platform-badge ${item.platform}">${platformInitial(item.platform)}</span>
+            <span>${item.platform}${staleNote}</span>
           </div>
         </div>
-        ${sparkline(readings)}
+        ${sparkline(readings, trendColor)}
       </a>`;
   }).join('');
 }
@@ -317,14 +376,14 @@ async function load() {
     const res = await fetch('data/history.json?_=' + Date.now());
     history = await res.json();
   } catch (e) {
-    document.getElementById('loading').style.display = 'none';
+    document.getElementById('skeleton').style.display = 'none';
     document.getElementById('empty').style.display = 'block';
     document.getElementById('updated').textContent = 'no data yet';
     return;
   }
 
   const entries = Object.values(history);
-  document.getElementById('loading').style.display = 'none';
+  document.getElementById('skeleton').style.display = 'none';
   if (!entries.length) {
     document.getElementById('empty').style.display = 'block';
     return;
@@ -350,9 +409,10 @@ async function load() {
   document.getElementById('updated').textContent = latestDate ? `updated ${latestDate}` : '';
   const dropCount = ROWS.filter(r => r.diff < 0).length;
   document.getElementById('stats').innerHTML =
-    `<span><b>${ROWS.length}</b> tracked</span>` +
-    (dropCount ? `<span class="drop-count"><b>${dropCount}</b> price drops</span>` : '');
+    `<span class="stat-pill"><b>${ROWS.length}</b> tracked</span>` +
+    (dropCount ? `<span class="stat-pill hot">🔥 <b>${dropCount}</b> price drop${dropCount > 1 ? 's' : ''}</span>` : '');
 
+  renderHero();
   render('all');
 }
 
