@@ -7,11 +7,15 @@ for each one, and appends today's reading to data/history.json.
 Platforms handled:
   - shopify   : brand stores built on Shopify (Timex, Casio Store, etc).
                 Reliable — uses Shopify's public {product}.json endpoint.
-  - flipkart  : best-effort HTML scraping. Flipkart actively blocks bots,
-                so this WILL fail sometimes. On failure we just keep
-                yesterday's price and flag it as "stale" on the page.
-  - myntra    : same best-effort approach as Flipkart, same caveat.
-  - amazon    : same best-effort approach, resolves amzn.in short links first.
+  - flipkart  : rendered with a real headless browser (Playwright), since
+                Flipkart also blocks based on the requesting IP address.
+                GitHub Actions IPs are commonly on that blocklist, so this
+                may still fail with a 529 even though the code is correct.
+  - myntra    : rendered with a real headless browser. Myntra loads its
+                price via JavaScript, so this was the actual fix needed —
+                should work reliably now.
+  - amazon    : same headless-browser approach, resolves amzn.in short
+                links automatically since the browser follows redirects.
 
 Run manually:  python scraper.py
 Run daily via: .github/workflows/track-prices.yml (GitHub Actions cron)
@@ -26,6 +30,7 @@ from urllib.parse import urlparse
 
 import requests
 from bs4 import BeautifulSoup
+from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).parent
 PRODUCTS_FILE = ROOT / "products.json"
@@ -38,6 +43,26 @@ HEADERS = {
     ),
     "Accept-Language": "en-IN,en;q=0.9",
 }
+
+# Known CSS selectors as a fallback when structured data (JSON-LD) isn't
+# present. These WILL go stale when a site redesigns its page — that's
+# normal, not a sign something is broken.
+PRICE_SELECTORS = [
+    "div._30jeq3",                                   # Flipkart (older layout)
+    "div.Nx9bqj",                                     # Flipkart (newer layout)
+    ".pdp-price strong",                               # Myntra
+    "span.pdp-price",                                  # Myntra (alt)
+    "#corePrice_feature_div .a-price .a-offscreen",    # Amazon
+    ".a-price .a-offscreen",                           # Amazon (generic)
+    "#priceblock_ourprice",                            # Amazon (older layout)
+]
+IMAGE_SELECTORS = [
+    "img._396cs4",     # Flipkart
+    "img._2r_T1I",     # Flipkart (alt)
+    ".image-grid-image",  # Myntra (background-image, handled separately)
+    "#landingImage",   # Amazon
+    "#imgTagWrapperId img",  # Amazon (alt)
+]
 
 
 def load_json(path, default):
@@ -68,16 +93,9 @@ def fetch_shopify(url):
     return price, image, title
 
 
-def fetch_generic(url):
-    """
-    Best-effort path for Flipkart / Myntra / Amazon.
-    Tries JSON-LD structured data first, then falls back to meta tags.
-    No guarantees — these sites actively resist scraping.
-    """
-    r = requests.get(url, headers=HEADERS, timeout=20, allow_redirects=True)
-    r.raise_for_status()
-    soup = BeautifulSoup(r.text, "html.parser")
-
+def _extract_from_html(html, soup_hint_url=""):
+    """Shared parsing logic: JSON-LD -> meta tags -> known CSS selectors."""
+    soup = BeautifulSoup(html, "html.parser")
     price, image, title = None, None, None
 
     # 1. Try JSON-LD (schema.org Product data), when present
@@ -119,17 +137,76 @@ def fetch_generic(url):
         tag = soup.find("meta", {"property": "og:title"}) or soup.find("title")
         title = tag.get("content") if tag and tag.get("content") else (tag.text if tag else None)
 
+    # 3. Fall back to known CSS selectors (site-specific, may go stale)
+    if price is None:
+        for sel in PRICE_SELECTORS:
+            tag = soup.select_one(sel)
+            if tag and tag.get_text(strip=True):
+                digits = re.sub(r"[^\d.]", "", tag.get_text())
+                if digits:
+                    price = float(digits)
+                    break
+
+    if image is None:
+        for sel in IMAGE_SELECTORS:
+            tag = soup.select_one(sel)
+            if tag:
+                image = tag.get("src") or tag.get("data-src")
+                if image:
+                    break
+
     if price is None:
         raise ValueError("Could not find a price on this page")
 
     return price, image, title
 
 
+_browser_ctx = {"pw": None, "browser": None}
+
+
+def _get_browser():
+    """Reuse one headless browser instance across all JS-rendered fetches."""
+    if _browser_ctx["browser"] is None:
+        _browser_ctx["pw"] = sync_playwright().start()
+        _browser_ctx["browser"] = _browser_ctx["pw"].chromium.launch(headless=True)
+    return _browser_ctx["browser"]
+
+
+def close_browser():
+    if _browser_ctx["browser"]:
+        _browser_ctx["browser"].close()
+    if _browser_ctx["pw"]:
+        _browser_ctx["pw"].stop()
+
+
+def fetch_rendered(url):
+    """
+    Loads the page in a real headless Chrome browser so JavaScript-rendered
+    prices (Myntra, Amazon) actually appear before we read the page.
+    Flipkart may still return a 529 here — that's IP-based blocking, which
+    rendering JS doesn't get around.
+    """
+    browser = _get_browser()
+    page = browser.new_page(
+        user_agent=HEADERS["User-Agent"],
+        viewport={"width": 1280, "height": 1600},
+        locale="en-IN",
+    )
+    try:
+        page.goto(url, timeout=30000, wait_until="domcontentloaded")
+        page.wait_for_timeout(3000)  # let JS finish rendering the price
+        html = page.content()
+    finally:
+        page.close()
+
+    return _extract_from_html(html)
+
+
 def fetch_price(product):
     platform = product["platform"]
     if platform == "shopify":
         return fetch_shopify(product["url"])
-    return fetch_generic(product["url"])
+    return fetch_rendered(product["url"])
 
 
 def main():
@@ -172,6 +249,7 @@ def main():
             failed += 1
             print(f"[FAILED] {product['name'][:50]:50s} -> {e}")
 
+    close_browser()
     save_json(HISTORY_FILE, history)
     print(f"\nDone. {ok} succeeded, {failed} failed. Data saved to {HISTORY_FILE}")
 
