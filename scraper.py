@@ -147,6 +147,17 @@ def _extract_from_html(html, soup_hint_url=""):
                     price = float(digits)
                     break
 
+    # 4. Last resort: SPAs (Myntra especially) often embed the page's data
+    # as raw JSON inside a <script> tag for hydration. Search the whole
+    # rendered HTML source for common price keys even if they never made
+    # it into a visible DOM element.
+    if price is None:
+        for key in ["discountedPrice", "sellingPrice", "finalPrice", "offerPrice", "price"]:
+            m = re.search(rf'"{key}"\s*:\s*"?(\d{{2,7}}(?:\.\d+)?)"?', html)
+            if m:
+                price = float(m.group(1))
+                break
+
     if image is None:
         for sel in IMAGE_SELECTORS:
             tag = soup.select_one(sel)
@@ -191,10 +202,21 @@ def fetch_rendered(url):
         user_agent=HEADERS["User-Agent"],
         viewport={"width": 1280, "height": 1600},
         locale="en-IN",
+        extra_http_headers={"Accept-Language": "en-IN,en;q=0.9"},
+    )
+    # Hide the most obvious automation fingerprint (navigator.webdriver),
+    # which some sites (Myntra included) check before deciding whether to
+    # serve a full page or a stripped-down one.
+    page.add_init_script(
+        "Object.defineProperty(navigator, 'webdriver', {get: () => undefined});"
     )
     try:
         page.goto(url, timeout=30000, wait_until="domcontentloaded")
-        page.wait_for_timeout(3000)  # let JS finish rendering the price
+        try:
+            page.wait_for_load_state("networkidle", timeout=12000)
+        except Exception:
+            pass  # some pages never go fully idle (ads/trackers); proceed anyway
+        page.wait_for_timeout(2000)  # small extra buffer for late-rendering price
         html = page.content()
     finally:
         page.close()
