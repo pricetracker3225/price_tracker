@@ -112,7 +112,7 @@
         "price": 3599.0
       }
     ],
-    "last_status": "ok",
+    "last_status": "failed",
     "last_ok": "2026-08-22"
   },
   "flipkart-link-2": {
@@ -126,7 +126,7 @@
         "price": 3719.0
       }
     ],
-    "last_status": "ok",
+    "last_status": "failed",
     "last_ok": "2026-08-22"
   },
   "flipkart-link-3": {
