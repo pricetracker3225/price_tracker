@@ -1,0 +1,36 @@
+name: Daily Price Check
+
+on:
+  schedule:
+    # 3:00 UTC = 8:30 AM IST, every day
+    - cron: "0 3 * * *"
+  workflow_dispatch: {}  # lets you trigger it manually from the Actions tab
+
+permissions:
+  contents: write
+
+jobs:
+  check-prices:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run price check
+        run: python scraper.py
+
+      - name: Commit updated price history
+        run: |
+          git config user.name "price-tracker-bot"
+          git config user.email "actions@github.com"
+          git add data/history.json
+          git diff --staged --quiet || git commit -m "Price check: $(date -u +%Y-%m-%d)"
+          git push
