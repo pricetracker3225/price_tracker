@@ -80,9 +80,13 @@
       {
         "date": "2026-09-10",
         "price": 11495.0
+      },
+      {
+        "date": "2026-09-11",
+        "price": 11495.0
       }
     ],
-    "last_ok": "2026-09-10",
+    "last_ok": "2026-09-11",
     "last_status": "ok"
   },
   "timex-round-40mm-blue-tw2y66500uj": {
@@ -166,9 +170,13 @@
       {
         "date": "2026-09-10",
         "price": 14995.0
+      },
+      {
+        "date": "2026-09-11",
+        "price": 14995.0
       }
     ],
-    "last_ok": "2026-09-10",
+    "last_ok": "2026-09-11",
     "last_status": "ok"
   },
   "casio-gshock-ga2100as-5a": {
@@ -252,9 +260,13 @@
       {
         "date": "2026-09-10",
         "price": 6996.5
+      },
+      {
+        "date": "2026-09-11",
+        "price": 6996.5
       }
     ],
-    "last_ok": "2026-09-10",
+    "last_ok": "2026-09-11",
     "last_status": "ok"
   },
   "casio-vintage-a140we-2adf": {
@@ -338,9 +350,13 @@
       {
         "date": "2026-09-10",
         "price": 6495.0
+      },
+      {
+        "date": "2026-09-11",
+        "price": 6495.0
       }
     ],
-    "last_ok": "2026-09-10",
+    "last_ok": "2026-09-11",
     "last_status": "ok"
   },
   "titan-edge-flipkart": {
@@ -378,7 +394,7 @@
         "price": 10496.0
       }
     ],
-    "last_status": "ok",
+    "last_status": "failed",
     "last_ok": "2026-09-10"
   },
   "timex-chrono-tw2y70500ik-myntra": {
@@ -448,7 +464,7 @@
         "price": 3599.0
       }
     ],
-    "last_status": "ok",
+    "last_status": "failed",
     "last_ok": "2026-09-10"
   },
   "flipkart-link-2": {
@@ -486,7 +502,7 @@
         "price": 3849.0
       }
     ],
-    "last_status": "ok",
+    "last_status": "failed",
     "last_ok": "2026-09-10"
   },
   "flipkart-link-3": {
@@ -524,7 +540,7 @@
         "price": 3195.0
       }
     ],
-    "last_status": "ok",
+    "last_status": "failed",
     "last_ok": "2026-09-10"
   },
   "amazon-link-1": {
