@@ -136,9 +136,13 @@
       {
         "date": "2026-09-24",
         "price": 11495.0
+      },
+      {
+        "date": "2026-09-25",
+        "price": 11495.0
       }
     ],
-    "last_ok": "2026-09-24",
+    "last_ok": "2026-09-25",
     "last_status": "ok"
   },
   "timex-round-40mm-blue-tw2y66500uj": {
@@ -278,9 +282,13 @@
       {
         "date": "2026-09-24",
         "price": 14995.0
+      },
+      {
+        "date": "2026-09-25",
+        "price": 14995.0
       }
     ],
-    "last_ok": "2026-09-24",
+    "last_ok": "2026-09-25",
     "last_status": "ok"
   },
   "casio-gshock-ga2100as-5a": {
@@ -420,9 +428,13 @@
       {
         "date": "2026-09-24",
         "price": 6996.5
+      },
+      {
+        "date": "2026-09-25",
+        "price": 6996.5
       }
     ],
-    "last_ok": "2026-09-24",
+    "last_ok": "2026-09-25",
     "last_status": "ok"
   },
   "casio-vintage-a140we-2adf": {
@@ -562,9 +574,13 @@
       {
         "date": "2026-09-24",
         "price": 6495.0
+      },
+      {
+        "date": "2026-09-25",
+        "price": 6495.0
       }
     ],
-    "last_ok": "2026-09-24",
+    "last_ok": "2026-09-25",
     "last_status": "ok"
   },
   "titan-edge-flipkart": {
@@ -834,10 +850,14 @@
       {
         "date": "2026-09-20",
         "price": 3195.0
+      },
+      {
+        "date": "2026-09-25",
+        "price": 3095.0
       }
     ],
-    "last_status": "failed",
-    "last_ok": "2026-09-20"
+    "last_status": "ok",
+    "last_ok": "2026-09-25"
   },
   "amazon-link-1": {
     "name": "Logitech Pebble 2 Combo Wireless Keyboard and Mouse",
@@ -866,7 +886,7 @@
         "price": 4595.0
       }
     ],
-    "last_status": "ok",
+    "last_status": "failed",
     "last_ok": "2026-09-24"
   },
   "puma-fusionpro-myntra": {
