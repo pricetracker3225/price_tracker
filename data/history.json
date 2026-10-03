@@ -168,9 +168,13 @@
       {
         "date": "2026-10-02",
         "price": 11495.0
+      },
+      {
+        "date": "2026-10-03",
+        "price": 11495.0
       }
     ],
-    "last_ok": "2026-10-02",
+    "last_ok": "2026-10-03",
     "last_status": "ok"
   },
   "timex-round-40mm-blue-tw2y66500uj": {
@@ -342,9 +346,13 @@
       {
         "date": "2026-10-02",
         "price": 14995.0
+      },
+      {
+        "date": "2026-10-03",
+        "price": 14995.0
       }
     ],
-    "last_ok": "2026-10-02",
+    "last_ok": "2026-10-03",
     "last_status": "ok"
   },
   "casio-gshock-ga2100as-5a": {
@@ -516,9 +524,13 @@
       {
         "date": "2026-10-02",
         "price": 6996.5
+      },
+      {
+        "date": "2026-10-03",
+        "price": 6996.5
       }
     ],
-    "last_ok": "2026-10-02",
+    "last_ok": "2026-10-03",
     "last_status": "ok"
   },
   "casio-vintage-a140we-2adf": {
@@ -690,9 +702,13 @@
       {
         "date": "2026-10-02",
         "price": 6495.0
+      },
+      {
+        "date": "2026-10-03",
+        "price": 6495.0
       }
     ],
-    "last_ok": "2026-10-02",
+    "last_ok": "2026-10-03",
     "last_status": "ok"
   },
   "titan-edge-flipkart": {
@@ -788,10 +804,14 @@
       {
         "date": "2026-10-02",
         "price": 10699.0
+      },
+      {
+        "date": "2026-10-03",
+        "price": 8449.0
       }
     ],
     "last_status": "ok",
-    "last_ok": "2026-10-02"
+    "last_ok": "2026-10-03"
   },
   "timex-chrono-tw2y70500ik-myntra": {
     "name": "Timex Chronograph Bracelet Watch (TW2Y70500IK)",
@@ -829,7 +849,7 @@
     "name": "ADIDAS SHIFT M Running Shoes For Men",
     "url": "https://dl.flipkart.com/s/kEssCHuuuN",
     "platform": "flipkart",
-    "image": "https://rukmini1.flixcart.com/image/1500/1500/xif0q/shoe/g/g/b/-original-imahh6w7hbu92fuf.jpeg?q=70",
+    "image": "https://rukmini1.flixcart.com/image/1500/1500/xif0q/shoe/g/f/o/-original-imahrrjszgy62b6f.jpeg?q=70",
     "readings": [
       {
         "date": "2026-08-22",
@@ -898,10 +918,14 @@
       {
         "date": "2026-10-02",
         "price": 3791.0
+      },
+      {
+        "date": "2026-10-03",
+        "price": 2559.0
       }
     ],
     "last_status": "ok",
-    "last_ok": "2026-10-02"
+    "last_ok": "2026-10-03"
   },
   "flipkart-link-2": {
     "name": "TIMEX Date Display with (Magnifier), Blue Dial Analog Watch  - For Men",
@@ -976,10 +1000,14 @@
       {
         "date": "2026-10-02",
         "price": 3469.0
+      },
+      {
+        "date": "2026-10-03",
+        "price": 3099.0
       }
     ],
     "last_status": "ok",
-    "last_ok": "2026-10-02"
+    "last_ok": "2026-10-03"
   },
   "flipkart-link-3": {
     "name": "Logitech Pebble Keys 2 K380s Bluetooth Laptop-size Tablet Keyboard Compatible with Desktop, Laptop, Mac Easy to Use,Plug and Play,Quick, Comfy Durable body",
@@ -1066,10 +1094,14 @@
       {
         "date": "2026-10-02",
         "price": 3095.0
+      },
+      {
+        "date": "2026-10-03",
+        "price": 3095.0
       }
     ],
     "last_status": "ok",
-    "last_ok": "2026-10-02"
+    "last_ok": "2026-10-03"
   },
   "amazon-link-1": {
     "name": "Logitech Pebble 2 Combo Wireless Keyboard and Mouse",
