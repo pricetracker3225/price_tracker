@@ -200,9 +200,13 @@
       {
         "date": "2026-10-10",
         "price": 11495.0
+      },
+      {
+        "date": "2026-10-11",
+        "price": 11495.0
       }
     ],
-    "last_ok": "2026-10-10",
+    "last_ok": "2026-10-11",
     "last_status": "ok"
   },
   "timex-round-40mm-blue-tw2y66500uj": {
@@ -406,9 +410,13 @@
       {
         "date": "2026-10-10",
         "price": 14995.0
+      },
+      {
+        "date": "2026-10-11",
+        "price": 14995.0
       }
     ],
-    "last_ok": "2026-10-10",
+    "last_ok": "2026-10-11",
     "last_status": "ok"
   },
   "casio-gshock-ga2100as-5a": {
@@ -612,9 +620,13 @@
       {
         "date": "2026-10-10",
         "price": 6996.5
+      },
+      {
+        "date": "2026-10-11",
+        "price": 6996.5
       }
     ],
-    "last_ok": "2026-10-10",
+    "last_ok": "2026-10-11",
     "last_status": "ok"
   },
   "casio-vintage-a140we-2adf": {
@@ -818,9 +830,13 @@
       {
         "date": "2026-10-10",
         "price": 6495.0
+      },
+      {
+        "date": "2026-10-11",
+        "price": 6495.0
       }
     ],
-    "last_ok": "2026-10-10",
+    "last_ok": "2026-10-11",
     "last_status": "ok"
   },
   "titan-edge-flipkart": {
@@ -948,10 +964,14 @@
       {
         "date": "2026-10-10",
         "price": 8439.0
+      },
+      {
+        "date": "2026-10-11",
+        "price": 8439.0
       }
     ],
     "last_status": "ok",
-    "last_ok": "2026-10-10"
+    "last_ok": "2026-10-11"
   },
   "timex-chrono-tw2y70500ik-myntra": {
     "name": "Timex Chronograph Bracelet Watch (TW2Y70500IK)",
@@ -1086,10 +1106,14 @@
       {
         "date": "2026-10-10",
         "price": 2599.0
+      },
+      {
+        "date": "2026-10-11",
+        "price": 2599.0
       }
     ],
     "last_status": "ok",
-    "last_ok": "2026-10-10"
+    "last_ok": "2026-10-11"
   },
   "flipkart-link-2": {
     "name": "TIMEX Date Display with (Magnifier), Blue Dial Analog Watch  - For Men",
@@ -1196,10 +1220,14 @@
       {
         "date": "2026-10-10",
         "price": 2849.0
+      },
+      {
+        "date": "2026-10-11",
+        "price": 2849.0
       }
     ],
     "last_status": "ok",
-    "last_ok": "2026-10-10"
+    "last_ok": "2026-10-11"
   },
   "flipkart-link-3": {
     "name": "Logitech Pebble Keys 2 K380s Bluetooth Laptop-size Tablet Keyboard Compatible with Desktop, Laptop, Mac Easy to Use,Plug and Play,Quick, Comfy Durable body",
@@ -1314,10 +1342,14 @@
       {
         "date": "2026-10-10",
         "price": 2940.0
+      },
+      {
+        "date": "2026-10-11",
+        "price": 2940.0
       }
     ],
     "last_status": "ok",
-    "last_ok": "2026-10-10"
+    "last_ok": "2026-10-11"
   },
   "amazon-link-1": {
     "name": "Logitech Pebble 2 Combo Wireless Keyboard and Mouse",
